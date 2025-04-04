@@ -1,0 +1,11 @@
+{
+	"name": "FastRedis",
+	"description": "FastRedis é uma biblioteca otimizada para mapear automaticamente objetos para o Redis, simplificando a persistência, recuperação e comunicação assíncrona via filas.",
+	"version": "1.0.0",
+	"homepage": "https://github.com/GabrielCsr/FastRedis",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"https://github.com/danieleteti/delphiredisclient": "^v2.2"
+	}
+}

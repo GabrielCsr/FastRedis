@@ -1,0 +1,100 @@
+object frmAcess: TfrmAcess
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 458
+  ClientWidth = 644
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Rectangle1: TRectangle
+    Align = Client
+    Fill.Color = claWhite
+    Size.Width = 644.000000000000000000
+    Size.Height = 458.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object Layout1: TLayout
+      Align = Bottom
+      Position.Y = 408.000000000000000000
+      Size.Width = 644.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object lblUser: TSkLabel
+        Align = MostRight
+        Margins.Right = 20.000000000000000000
+        Position.X = 463.589996337890600000
+        Size.Width = 160.410003662109400000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        StyledSettings = [Family, Style, FontColor]
+        TextSettings.Font.Size = 24.000000000000000000
+        Words = <
+          item
+            Text = 'Gabriel Teixeira'
+          end>
+      end
+    end
+    object Layout2: TLayout
+      Align = VertCenter
+      Position.Y = 177.000000000000000000
+      Size.Width = 644.000000000000000000
+      Size.Height = 54.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object SkLabel2: TSkLabel
+        Align = MostLeft
+        Margins.Left = 50.000000000000000000
+        Position.X = 50.000000000000000000
+        Size.Width = 302.470001220703100000
+        Size.Height = 54.000000000000000000
+        Size.PlatformDefault = False
+        StyledSettings = [Family, Style, FontColor]
+        TextSettings.Font.Size = 26.000000000000000000
+        Words = <
+          item
+            Text = 'Tempo restante de acesso:'
+          end>
+      end
+      object lblTimingRemaining: TSkLabel
+        Align = Left
+        Margins.Left = 10.000000000000000000
+        Position.X = 362.470001220703100000
+        Size.Width = 80.699996948242190000
+        Size.Height = 54.000000000000000000
+        Size.PlatformDefault = False
+        StyledSettings = [Family, Style, FontColor]
+        TextSettings.Font.Size = 22.000000000000000000
+        Words = <
+          item
+            Text = '00:00:00'
+          end>
+      end
+      object Button1: TButton
+        Align = MostRight
+        Margins.Right = 50.000000000000000000
+        Position.X = 456.000000000000000000
+        Size.Width = 138.000000000000000000
+        Size.Height = 54.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Renovar acesso'
+        TextSettings.Trimming = None
+        OnClick = Button1Click
+      end
+    end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 592
+    Top = 16
+  end
+  object Timer2: TTimer
+    OnTimer = Timer2Timer
+    Left = 480
+    Top = 32
+  end
+end

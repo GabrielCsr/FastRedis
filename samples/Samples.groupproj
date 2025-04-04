@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A2181833-89FD-4BCB-999D-AB3DC1C64409}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Cache\SimpleUsingCases.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SessionController\SessionController.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SimpleUsingCases">
+        <MSBuild Projects="Cache\SimpleUsingCases.dproj"/>
+    </Target>
+    <Target Name="SimpleUsingCases:Clean">
+        <MSBuild Projects="Cache\SimpleUsingCases.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SimpleUsingCases:Make">
+        <MSBuild Projects="Cache\SimpleUsingCases.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SessionController">
+        <MSBuild Projects="SessionController\SessionController.dproj"/>
+    </Target>
+    <Target Name="SessionController:Clean">
+        <MSBuild Projects="SessionController\SessionController.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SessionController:Make">
+        <MSBuild Projects="SessionController\SessionController.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SimpleUsingCases;SessionController"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SimpleUsingCases:Clean;SessionController:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SimpleUsingCases:Make;SessionController:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
