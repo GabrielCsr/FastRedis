@@ -5,15 +5,19 @@ interface
 uses
   Redis.Commons, Redis.Client, Redis.NetLib.INDY,
   System.Rtti, System.SysUtils, System.JSON, System.TypInfo, System.Generics.Collections,
-  FastRedisHash, FastRedisList;
+  FastRedisHash, FastRedisList, FastRedis.Redis.Configuration;
 
 type
   TFastRedis = class
   private
     class var FHash: TFastRedisHash;
     class var FList: TFastRedisList;
+    class procedure FreeInstances;
   public
+    class procedure Configuration(AHost: String; APort: integer);
+
     class function TypeOfKey(const AKey: String): String;
+
     {String}
     class procedure Save<T: Class, Constructor>(const AKey: string;
                                                 const AValue: T;
@@ -42,7 +46,7 @@ type
 implementation
 
 uses
-  FastRedis.Redis.Configuration, REST.Json, FastRedis.Redis.Connection, Redis.Values;
+  REST.Json, FastRedis.Redis.Connection, Redis.Values;
 
 { TFastRedis }
 
@@ -88,6 +92,9 @@ end;
 
 class function TFastRedis.List: TFastRedisList;
 begin
+  if not Assigned(FList) then
+    TFastRedis.FList := TFastRedisList.Create;
+
   Result := FList;
 end;
 
@@ -115,6 +122,11 @@ begin
   end;
 end;
 
+class procedure TFastRedis.Configuration(AHost: String; APort: integer);
+begin
+  TRedisConnection.Instance(AHost, APort);
+end;
+
 class procedure TFastRedis.Delete(const AKey: string);
 begin
   TRedisConnection.Instance.DEL([AKey]);
@@ -125,8 +137,20 @@ begin
   Result := TRedisConnection.Instance.EXISTS(AKey);
 end;
 
+class procedure TFastRedis.FreeInstances;
+begin
+  if Assigned(FHash) then
+    FreeAndNil(FHash);
+
+  if Assigned(FList) then
+    FreeAndNil(FList);
+end;
+
 class function TFastRedis.Hash: TFastRedisHash;
 begin
+  if not Assigned(FHash) then
+    FHash := TFastRedisHash.Create;
+
   Result := FHash;
 end;
 
@@ -173,12 +197,9 @@ begin
 end;
 
 initialization
-  TFastRedis.FHash := TFastRedisHash.Create;
-  TFastRedis.FList := TFastRedisList.Create;
 
 finalization
-  TFastRedis.FHash.Free;
-  TFastRedis.FList.Free;
+  TFastRedis.FreeInstances;
 
 end.
 
