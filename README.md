@@ -58,4 +58,5 @@ Para mais exemplos, acesse o diretório `samples/`. Nele, você encontrará um p
 ![image](https://github.com/user-attachments/assets/e6d31dfc-dfbe-4668-bf38-d69e4ef390ee) ![image](https://github.com/user-attachments/assets/6e94a18d-c1e8-47d0-b374-5b4a01e3db9a)
 ![image](https://github.com/user-attachments/assets/a6e42884-2361-4ad0-ac34-ce799079965c)
 
-
+## ♦️ Bibliografia
+No core do projeto foi utilizado a biblioteca: https://github.com/danieleteti/delphiredisclient
