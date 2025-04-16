@@ -8,7 +8,8 @@ uses
   FastRedis.Redis.Configuration in '..\..\src\Core\Configuration\FastRedis.Redis.Configuration.pas',
   FastRedis.Redis.Connection in '..\..\src\Core\Connection\FastRedis.Redis.Connection.pas',
   FastRedisHash in '..\..\src\Core\FastRedisHash.pas',
-  FastRedisList in '..\..\src\Core\FastRedisList.pas';
+  FastRedisList in '..\..\src\Core\FastRedisList.pas',
+  FastRedisQueue in '..\..\src\Core\FastRedisQueue.pas';
 
 {$R *.res}
 

@@ -308,6 +308,7 @@
         <DCCReference Include="..\..\src\Core\Connection\FastRedis.Redis.Connection.pas"/>
         <DCCReference Include="..\..\src\Core\FastRedisHash.pas"/>
         <DCCReference Include="..\..\src\Core\FastRedisList.pas"/>
+        <DCCReference Include="..\..\src\Core\FastRedisQueue.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

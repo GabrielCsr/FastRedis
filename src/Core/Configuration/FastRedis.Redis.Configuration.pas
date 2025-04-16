@@ -7,11 +7,13 @@ type
   private
     FHost: String;
     FPort: Integer;
+    class var FConfiguration: TRedisConfiguration;
   public
     property Host: String read FHost write FHost;
     property Port: Integer read FPort write FPort;
     class function Load: TRedisConfiguration;
     constructor Create;
+    class function DefaultConfiguration: TRedisConfiguration;
   end;
 
 implementation
@@ -25,6 +27,14 @@ constructor TRedisConfiguration.Create;
 begin
   FHost := '';
   FPort := 0;
+end;
+
+class function TRedisConfiguration.DefaultConfiguration: TRedisConfiguration;
+begin
+  if not Assigned(FConfiguration) then
+    FConfiguration := TRedisConfiguration.Create;
+
+  Result := FConfiguration;
 end;
 
 class function TRedisConfiguration.Load: TRedisConfiguration;
@@ -46,5 +56,10 @@ begin
 
   Result := TJson.JsonToObject<TRedisConfiguration>(TFile.ReadAllText(LFilePath));
 end;
+
+initialization
+
+finalization
+  TRedisConfiguration.FConfiguration.Free;
 
 end.

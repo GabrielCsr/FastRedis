@@ -55,7 +55,7 @@ begin
     if not (Length(LFields) > 0) then
       Exit;
       
-    LArray := TRedisConnection.Instance.HMGET(AKey, LFields);
+    LArray := TRedisConnection.DefaultInstance.HMGET(AKey, LFields);
 
     if LArray.IsNull  then
       Exit;
@@ -87,7 +87,7 @@ end;
 class procedure TFastRedisHash.Delete(const AKey: String;
   AFields: TArray<String>);
 begin
-  TRedisConnection.Instance.HDEL(AKey, AFields);
+  TRedisConnection.DefaultInstance.HDEL(AKey, AFields);
 end;
 
 class procedure TFastRedisHash.Delete<T>(const AKey: String);
@@ -96,7 +96,7 @@ var
 begin
   LInstance := T.Create;
   try
-    TRedisConnection.Instance.HDEL(AKey, NamesAndValuesFromProperties<T>(LInstance).Key);
+    TRedisConnection.DefaultInstance.HDEL(AKey, NamesAndValuesFromProperties<T>(LInstance).Key);
   finally
     LInstance.Free;
   end;
@@ -104,7 +104,7 @@ end;
 
 class function TFastRedisHash.Exists(const AKey, AField: String): Boolean;
 begin
-  Result := TRedisConnection.Instance.HEXISTS(AKey, AField);
+  Result := TRedisConnection.DefaultInstance.HEXISTS(AKey, AField);
 end;
 
 class function TFastRedisHash.Exists<T>(const AKey: String): Boolean;
@@ -115,7 +115,7 @@ begin
   Linstance := T.Create;
   try
     LField := NamesAndValuesFromProperties<T>(LInstance, True).Key[0];
-    Result := TRedisConnection.Instance.HEXISTS(AKey, LField);
+    Result := TRedisConnection.DefaultInstance.HEXISTS(AKey, LField);
   finally
     Linstance.Free;
   end;
@@ -126,7 +126,7 @@ var
   LValue: String;
 begin
   LValue := '';
-  TRedisConnection.Instance.HGET(AKey, AField, LValue);
+  TRedisConnection.DefaultInstance.HGET(AKey, AField, LValue);
   Result := LValue;
 end;
 
@@ -139,7 +139,7 @@ begin
   if MatchStr('', [AKey, AField]) then
     raise Exception.Create('Key or field don''''t informed');
 
-  TRedisConnection.Instance.HGET(AKey, AField, LValue);
+  TRedisConnection.DefaultInstance.HGET(AKey, AField, LValue);
 
   if LValue.IsEmpty then
     Exit;
@@ -182,7 +182,7 @@ end;
 
 class procedure TFastRedisHash.Save(const AKey, AField, AValue: string);
 begin
-  TRedisConnection.Instance.HSET(AKey, AField, AValue);
+  TRedisConnection.DefaultInstance.HSET(AKey, AField, AValue);
 end;
 
 class procedure TFastRedisHash.Save<T>(const AKey: string; const AValue: T);
@@ -196,7 +196,7 @@ begin
     LPairFieldsValues := NamesAndValuesFromProperties<T>(AValue);
 
     if Length(LPairFieldsValues.Key) > 0 then
-      TRedisConnection.Instance.HMSET(AKey, LPairFieldsValues.Key, LPairFieldsValues.Value);
+      TRedisConnection.DefaultInstance.HMSET(AKey, LPairFieldsValues.Key, LPairFieldsValues.Value);
   except
     On E: Exception do
       raise Exception.Create('Error on save hash. ' + E.Message);
@@ -209,7 +209,7 @@ begin
   if not Assigned(AValue) then
     Exit;
 
-  TRedisConnection.Instance.HSET(AKey, AField, TJson.ObjectToJsonString(AValue));
+  TRedisConnection.DefaultInstance.HSET(AKey, AField, TJson.ObjectToJsonString(AValue));
 end;
 
 end.

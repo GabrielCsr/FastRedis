@@ -6,7 +6,10 @@
         <Projects Include="Cache\SimpleUsingCases.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SessionController\SessionController.dproj">
+        <Projects Include="Queue\Queue.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Login\Login.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +29,32 @@
     <Target Name="SimpleUsingCases:Make">
         <MSBuild Projects="Cache\SimpleUsingCases.dproj" Targets="Make"/>
     </Target>
-    <Target Name="SessionController">
-        <MSBuild Projects="SessionController\SessionController.dproj"/>
+    <Target Name="Queue">
+        <MSBuild Projects="Queue\Queue.dproj"/>
     </Target>
-    <Target Name="SessionController:Clean">
-        <MSBuild Projects="SessionController\SessionController.dproj" Targets="Clean"/>
+    <Target Name="Queue:Clean">
+        <MSBuild Projects="Queue\Queue.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="SessionController:Make">
-        <MSBuild Projects="SessionController\SessionController.dproj" Targets="Make"/>
+    <Target Name="Queue:Make">
+        <MSBuild Projects="Queue\Queue.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Login">
+        <MSBuild Projects="Login\Login.dproj"/>
+    </Target>
+    <Target Name="Login:Clean">
+        <MSBuild Projects="Login\Login.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Login:Make">
+        <MSBuild Projects="Login\Login.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="SimpleUsingCases;SessionController"/>
+        <CallTarget Targets="SimpleUsingCases;Queue;Login"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="SimpleUsingCases:Clean;SessionController:Clean"/>
+        <CallTarget Targets="SimpleUsingCases:Clean;Queue:Clean;Login:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="SimpleUsingCases:Make;SessionController:Make"/>
+        <CallTarget Targets="SimpleUsingCases:Make;Queue:Make;Login:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -5,7 +5,7 @@ interface
 uses
   Redis.Commons, Redis.Client, Redis.NetLib.INDY,
   System.Rtti, System.SysUtils, System.JSON, System.TypInfo, System.Generics.Collections,
-  FastRedisHash, FastRedisList, FastRedis.Redis.Configuration;
+  FastRedisHash, FastRedisList, FastRedis.Redis.Configuration, FastRedisQueue;
 
 type
   TFastRedis = class
@@ -41,6 +41,9 @@ type
 
     {List}
     class function List: TFastRedisList;
+
+    {PubSub}
+    class function Queue(AAutomaticReconnect: Boolean = True): TFastRedisQueue;
   end;
 
 implementation
@@ -53,7 +56,7 @@ uses
 class procedure TFastRedis.Save(const AKey, AValue: String;
   Expiration: Integer);
 begin
-  TRedisConnection.Instance.&SET(AKey, AValue);
+  TRedisConnection.DefaultInstance.&SET(AKey, AValue);
 
   if Expiration > 0 then
     SetExpirationTime(AKey, Expiration);
@@ -75,7 +78,7 @@ begin
     else
       LJSONValue := TValue.From<T>(AValue).ToString;
 
-    TRedisConnection.Instance.&SET(AKey, LJSONValue);
+    TRedisConnection.DefaultInstance.&SET(AKey, LJSONValue);
 
     if Expiration > 0 then
       SetExpirationTime(AKey, Expiration);
@@ -87,7 +90,7 @@ end;
 class procedure TFastRedis.SetExpirationTime(const AKey: String;
   ATimeInSecounds: Integer);
 begin
-  TRedisConnection.Instance.EXPIRE(AKey, ATimeInSecounds);
+  TRedisConnection.DefaultInstance.EXPIRE(AKey, ATimeInSecounds);
 end;
 
 class function TFastRedis.List: TFastRedisList;
@@ -104,7 +107,7 @@ var
   RttiType: TRttiType;
   LValue: TRedisString;
 begin
-  LValue := TRedisConnection.Instance.GET(AKey);
+  LValue := TRedisConnection.DefaultInstance.GET(AKey);
 
   if LValue.IsNull then
     Exit(nil);
@@ -122,19 +125,25 @@ begin
   end;
 end;
 
+class function TFastRedis.Queue(AAutomaticReconnect: Boolean): TFastRedisQueue;
+begin
+  Result := TFastRedisQueue.Create(AAutomaticReconnect);
+end;
+
 class procedure TFastRedis.Configuration(AHost: String; APort: integer);
 begin
-  TRedisConnection.Instance(AHost, APort);
+  TRedisConfiguration.DefaultConfiguration.Host := AHost;
+  TRedisConfiguration.DefaultConfiguration.Port := APort;
 end;
 
 class procedure TFastRedis.Delete(const AKey: string);
 begin
-  TRedisConnection.Instance.DEL([AKey]);
+  TRedisConnection.DefaultInstance.DEL([AKey]);
 end;
 
 class function TFastRedis.Exists(const AKey: string): Boolean;
 begin
-  Result := TRedisConnection.Instance.EXISTS(AKey);
+  Result := TRedisConnection.DefaultInstance.EXISTS(AKey);
 end;
 
 class procedure TFastRedis.FreeInstances;
@@ -161,17 +170,17 @@ begin
     Exit;
 
 
-  TRedisConnection.Instance.EXPIRE(AKey, TimeRemaining(AKey) + ATimeInSecounds);
+  TRedisConnection.DefaultInstance.EXPIRE(AKey, TimeRemaining(AKey) + ATimeInSecounds);
 end;
 
 class function TFastRedis.TimeRemaining(const AKey: string): Integer;
 begin
-  Result := TRedisConnection.Instance.TTL(AKey);
+  Result := TRedisConnection.DefaultInstance.TTL(AKey);
 end;
 
 class function TFastRedis.TypeOfKey(const AKey: String): String;
 begin
-  Result := TRedisConnection.Instance.&TYPE(AKey);
+  Result := TRedisConnection.DefaultInstance.&TYPE(AKey);
 end;
 
 class function TFastRedis.Keys(const APattern: string): TArray<string>;
@@ -181,7 +190,7 @@ var
 begin
   SetLength(Result, 0);
 
-  LKeys := TRedisConnection.Instance.KEYS(APattern);
+  LKeys := TRedisConnection.DefaultInstance.KEYS(APattern);
 
   if LKeys.IsNull then
     Exit;
