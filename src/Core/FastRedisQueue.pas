@@ -101,20 +101,14 @@ end;
 procedure TFastRedisQueue.ProcessMessage(const AChannel, AMessage: string);
 var
   Callback: TProc<string>;
+  LUtf8Message: string;
 begin
   TMonitor.Enter(FLock);
   try
     if FChannelCallbacks.TryGetValue(AChannel, Callback) then
     begin
-      TThread.Queue(nil,
-        procedure
-        begin
-          try
-            Callback(AMessage);
-          except
-
-          end;
-        end);
+      LUtf8Message := TEncoding.UTF8.GetString(TEncoding.Default.GetBytes(AMessage));
+      Callback(LUtf8Message);
     end;
   finally
     TMonitor.Exit(FLock);
