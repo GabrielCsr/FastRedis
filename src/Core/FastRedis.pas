@@ -29,6 +29,8 @@ type
 
     class function Load<T: Class, Constructor>(const AKey: string): T;
 
+    class function Get(const AKey: String): String;
+
     class procedure Delete(const AKey: string);
     class function Exists(const AKey: string): Boolean;
     class function TimeRemaining(const AKey: string): Integer;
@@ -153,6 +155,11 @@ begin
 
   if Assigned(FList) then
     FreeAndNil(FList);
+end;
+
+class function TFastRedis.Get(const AKey: String): String;
+begin
+  Result := TRedisConnection.DefaultInstance.GET(AKey).Value;
 end;
 
 class function TFastRedis.Hash: TFastRedisHash;
